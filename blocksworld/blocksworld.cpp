@@ -17,7 +17,6 @@ using std::vector;
 using std::cout;
 using std::endl;
 
-
 // Used to represent specific states in blockworld
 class Node {
     public:
@@ -28,6 +27,8 @@ class Node {
         Node(int, int);
 };
 
+
+// Constructor for node class
 Node::Node() {
     parent = NULL;
     f = 0;
@@ -35,6 +36,7 @@ Node::Node() {
     h = 0;
 }
 
+// Non-default constructor
 Node::Node(int num_stacks, int num_blocks) {
     parent = NULL;
     f = 0;
@@ -42,7 +44,18 @@ Node::Node(int num_stacks, int num_blocks) {
     g = 0;
 }
 
+struct runner {
+    Node *goal; 
+    Node *start; 
+    int iterations; 
+    int stacks;
+    int blocks;
+    int queue_size;
+};
+
+
 void print_state(Node *, int, int);
+bool compare_states(Node *cur, Node *goal, int num_s, int num_b);
 
 // Generates the problem by randomly assigning blocks to stacks
 // This works by scrambling the final state
@@ -83,11 +96,28 @@ vector <vector<char> > problem_generator(Node *state, int num_s, int num_b) {
     return goal;
 }
 
+// Computes the number of blocks in a stack 
+// Used for better printing. 
+int blocks_in_stack(Node *state, int s, int num_blocks) {
+    int n = 0;
+
+    if (state->v[s].empty()) return 0;
+
+    for (int i = 0; i < num_blocks; i++) {
+        if (state->v[s][i] < 65 || state->v[s][i] > 90) {
+            return n;
+        }
+        n++;
+    }
+
+    return n;
+}
+
 // Prints the blocksworld state
 void print_state(Node *state, int num_s, int num_b) {
     for (int i =0 ; i < num_s; i++) {
         std::cout << i << " | ";
-        for (int j = 0; j < num_b; j++) {
+        for (int j = 0; j < blocks_in_stack(state, i, num_b); j++) {
             if (!state->v[i].empty())
                 std::cout << state->v[i][j] << " ";
         }
@@ -102,20 +132,20 @@ double compute_h(Node *cur_state, Node *goal_state, int num_s, int num_b) {
     double h = 0;
 
     for (int i = 0; i < num_s; i++) {
-        // Compute blocks in the final stack that aren't in the correct place
         if (i == 0) {
-            for (int b = 0; b < cur_state->v[0].size(); b++) {
-                // If blocks in final stack are out of place, add to h
-                if (cur_state->v[0][b] != goal_state->v[0][b]) {
-                    h++;
-                }
+            for (int j = 0; j < cur_state->v[i].size(); j++) {
+                if (cur_state->v[i][j] != goal_state->v[i][j])
+                    h += 1;
+                else h -= 5;
             }
         }
-        // Add up all the blocks in current state that aren't in final stack
         else {
             h += cur_state->v[i].size();
         }
     }
+
+    if (cur_state->v[0].size() == 0) h -= 5;
+
     return h;
 }
 
@@ -136,7 +166,6 @@ bool compare_states(Node *cur, Node *goal, int num_s, int num_b) {
 }
 
 // Generate all the possible successors
-// I THINK THIS IS FULLY WORKING?
 vector <Node*> create_successors(Node *current_state, int num_s, int num_b) {
     vector <Node*> s_list;
     vector <vector<char> > stack = current_state->v;
@@ -169,11 +198,11 @@ vector <Node*> create_successors(Node *current_state, int num_s, int num_b) {
     return s_list;
 }
 
-bool start_search(Node *start, Node *goal, int num_s, int num_b) {
+// Perform the A* Search
+// Requires the start state, goal state, number of stacks, number of blocks, and the
+// runner struct that stores certain information.
+Node * start_search(Node *start, Node *goal, int num_s, int num_b, struct runner &r) {
     cout << "\nStarting Search...." << endl;
-
-    // Initialize pqueue
-    //std::priority_queue<Node*> open, closed;
 
     vector <Node*> open, closed;
     int itr = 0;
@@ -185,61 +214,52 @@ bool start_search(Node *start, Node *goal, int num_s, int num_b) {
     start->f = start->h + 0;
     open.push_back(start);
 
-    if (compare_states(start, goal, num_s, num_b)) return true;
+    // If start state is the goal state, end search
+    if (compare_states(start, goal, num_s, num_b)) return start;
 
     while (!open.empty()) {
 
-        //cout << "ITERATIONS: " << itr << endl;
-        if (open.empty()) return false; // If no states in frontier, search failed
+        r.iterations = itr;
 
+        if (open.empty()) {
+            cout << "No more states left. Ending search." << endl;
+            return NULL; // If no states in frontier, search failed
+        }
 
-
-        // Grab lowest node in the pqueue
+        // Grab lowest f-value state in the open list
+        // Pretty much the pqueue function
         int min_index = 0, min_f = 10000000;
         for (int i = 0; i < open.size(); i++) {
+            //cout << open[i]->f << " ";
             if (open[i]->f < min_f) {
                 min_f = open[i]->f;
                 min_index = i;
             }
         }
+
+        // Grab the lowest node and then remove it from the open list (Frontier)
         Node *current = open[min_index];
         open.erase(open.begin() + min_index);
         closed.push_back(current);
 
-        sleep(3);
-        cout << "CURRENT STATE: " << endl;
-        cout << "G: " << current->g << " H: " << current->h << endl;
-        cout << "F value: " << current->f << endl;
-        print_state(current, num_s, num_b);
+        cout << "ITR: " << itr << " - QUEUE: " << open.size() << " - F: " << current->f <<endl;
 
-        // Check if current state is the goal, return if true
+        // Check if current state is the goal, return said state if true
         if (compare_states(current, goal, num_s, num_b)) {
-            cout << "GOAL STATE FOUND: " << endl;
-            print_state(current, num_s, num_b);
-            return true;
+            r.queue_size = open.size();
+            return current;
         }
-        else {
 
+        else {
             // Generate successors
             vector <Node*> successors = create_successors(current, num_s, num_b);
+
             int skip = 0;
-            int num = 0;
+
             // Iterate through successors
             for (int i = 0; i < successors.size(); i++ ) {
 
-                // Check if we have already been to a successor's state
-                for (int o = 0; o < open.size(); o++) {
-                    if (compare_states(successors[i], open[o], num_s, num_b)) {
-                        skip = 1;
-                    }
-                }
-                for (int c = 0; c < closed.size(); c++) {
-                    if (compare_states(successors[i], closed[c], num_s, num_b)){
-                        skip = 1;
-                    }
-                }
-
-                if (skip) continue;
+                skip = 0;
 
                 // Compute score for all successors
                 successors[i]->parent = current;
@@ -247,37 +267,101 @@ bool start_search(Node *start, Node *goal, int num_s, int num_b) {
                 successors[i]->h = compute_h(successors[i], goal, num_s, num_b);
                 successors[i]->f = successors[i]->g + successors[i]->h;
 
-                open.push_back(successors[i]);
-                num++;
+                // Check if we a successor state is already in the open list, 
+                // Update the scores if we found a shorter path to the state
+                for (int o = 0; o < open.size(); o++) {
+                    if (compare_states(successors[i], open[o], num_s, num_b)) {
+                        if (successors[i]->f < open[o]->f) {
+                            open[o]->g = successors[i]->g;
+                            open[o]->f = successors[i]->f;
+                        }
+                        skip = 1;
+                        break; 
+                    }
+                }
+                
+                // If we have already explored a state, we don't need to visit 
+                // it again.
+                for (int c = 0; c < closed.size(); c++) {
+                    if (compare_states(successors[i], closed[c], num_s, num_b)){
+                        skip = 1;
+                        break;
+                    }
+                }
 
+                // Only add a new successor if it doesn't need to be skipped.
+                if (!skip) {
+                    open.push_back(successors[i]);
+
+                }
+                
             }
-            cout << "NUM OF SUCCESSORS ADDED: " << num << endl;
         }
         itr++;
     }
+}
+
+// View the path taken from the start to final state
+void traceback(Node *state, int num_s, int num_b) {
+
+    vector <Node *> states;
+    Node *temp = state;
+
+
+    while (temp->parent != NULL) {
+        states.push_back(temp);
+        temp = temp->parent;
+    }
+
+    cout << "START: " << endl;
+    for (int i = states.size() - 1; i >= 0; i--) {
+        print_state(states[i], num_s, num_b);
+        cout << endl;
+    }
+}
+
+// Validation function for command line arguments 
+// when setting the stack/block number
+bool validate_args(int argc, char **argv) {
+
+    if (argc != 3) return false;
+
+    if (atoi(argv[1]) < 1) return false;
+    if (atoi(argv[2]) < 1) return false;
+
+    return true; 
 }
 
 int main(int argc, char **argv) {
 
     srand(time(NULL)); // seed random
 
-    int stacks = 3, blocks = 3;
-    Node *start, *goal;
+    if (!validate_args(argc, argv)) {
+        cout << "Error in command line arguments.\n";
+        cout << "USAGE: './a.out 'num-stacks' 'num-blocks'\n";
+        cout << "E.G. : '/a.out 3 5'" << endl;
+        return 0;
+    }
 
-    goal = new Node(stacks, blocks);
+    // Runner struct that contains all necessary information
+    struct runner r;
+    r.stacks = atoi(argv[1]);
+    r.blocks = atoi(argv[2]);
+    r.iterations = 0;
+    r.queue_size = 0;
+    r.goal = new Node(r.stacks, r.blocks);
+    r.start = new Node(r.stacks, r.blocks);
+    r.goal->v = problem_generator(r.start, r.stacks, r.blocks); // generate start/goal states
 
-    // Initialize the starting state
-    start = new Node(stacks, blocks);
-    goal->v = problem_generator(start, stacks, blocks);
+    // Perform the A* Search
+    Node *final_state = start_search(r.start, r.goal, r.stacks, r.blocks, r);
 
-    cout << "\nGOAL STATE: " << endl;
-    print_state(goal, stacks, blocks);
-    cout << endl;
+    // If a final state is found, perform a traceback to produce path
+    if(final_state != NULL) traceback(final_state, r.stacks, r.blocks);
+    else cout << "SEARCH FAILED. NO GOAL STATE FOUND." << endl;
 
-    cout << "STARTING STATE: " << endl;
-    print_state(start, stacks, blocks);
-
-    start_search(start, goal, stacks, blocks);
+    cout << "Final number of iterations: " << r.iterations << endl;
+    cout << "Max. queue size: " << r.queue_size << endl;
 
     return 0;
 }
