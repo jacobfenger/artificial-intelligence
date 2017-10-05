@@ -1,0 +1,109 @@
+\documentclass[12pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amsthm,amssymb, graphicx, listings, minted}
+\usepackage{placeins}
+
+\lstset{language=C++}
+
+% Janky stuff for figures below
+\let\Oldsection\section
+\renewcommand{\section}{\FloatBarrier\Oldsection}
+
+\let\Oldsubsection\subsection
+\renewcommand{\subsection}{\FloatBarrier\Oldsubsection}
+
+\let\Oldsubsubsection\subsubsection
+\renewcommand{\subsubsection}{\FloatBarrier\Oldsubsubsection}
+% End of janky stuff 
+
+\graphicspath{ {../images/} }
+
+\begin{document}
+
+\title{CSCE 625 Programming Assignment \#1}
+\author{Jacob Fenger}
+\date{\today}
+\maketitle
+
+\tableofcontents
+
+\section{Running the Program}
+To run the program:
+\begin{enumerate}
+	\item Compile blocksworld.cpp (I used g++ version 4.8.4). E.g. 'g++ blocksworld.cpp'.
+	\item To run the program, you must specificy the stack and block number as command line 
+	arguments (E.g. './a.out 3 5' for 3 stacks and 5 blocks).
+	\item The output should now output information regarding the state of the program. 
+	If a path is found to the goal state, it should show it as well as the number of iterations
+	and the priority queue size. If no path is found, or the number of iterations exceeds 
+	5000, then it will output a message regarding failure.
+\end{enumerate}
+
+\section{Example Traces}
+The following shows an example trace of running with a stack and block size of 3 and 5
+respectively.
+
+\inputminted{text}{3-5-trace}
+
+\section{Heuristic Description}
+My heurestic gives the worst penalty when blocks are not in the correct spots in the 
+final stack. The intuition here is that the algorithm will be more likely to remove blocks
+from the final stack if they are not in the correct position so that it will allow the 
+correct blocks to be placed there. The problem with doing just this is that the search 
+will be more likely to place blocks into their correct spots even if the block below 
+isn't in the correct position. This leads into the next component of my heuristic.
+
+Blocks can be placed on top of lower valued blocks (Such as a B on top of an A) which will 
+lead to more moves to get the lower block into the goal state. My heuristic penalizes 
+states which have the lower block below other blocks when it is not in the goal state. 
+This will ensure that states with lower blocks on top will be more likely to be chosen 
+since less moves are required to reach the goal state in those situations.
+
+\subsection{Admissability}
+This heuristic is not admissable because the cost it estimates tends to always be 
+higher than the actual cost of reaching the goal. In my opinion, it is very hard to find
+an admissable heuristic in this problem without using a more extensive search algorithm.
+
+\section{Performance Metrics}
+
+Below is a table showing the average number of iterations, queue size, and path length
+for solutions of different stack and block sizes. Each problem space was ran ten times
+and averages were computed.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+	& \textbf{3-5} & \textbf{6-10} & \textbf{3-7} & \textbf{3-10} & \textbf{5-12} \\ \hline
+\textbf{Iterations} & 22.9 & 27.67 & 106.6 & 528.8 & 64.4 \\ \hline
+\textbf{Path Length} & 9.9 & 15.3 & 18.9 & 27 & 22 \\ \hline
+\textbf{Queue Size} & 48.9 & 442.3 & 241.3 & 1367.8 &  716.2 \\ \hline
+\textbf{Failures} & 0 & 4 & 0 & 0 & 5\\ \hline
+\end{tabular}
+\caption{Average iteration, average queue size, average path 
+length, and number of failures out of 10 executions for 
+solutions with stack-block sizes (3-5 represents three 
+stacks, five blocks).}
+\end{table}
+
+\section{Results Discussion}
+
+My heuristic worked fine for cases where the stack size was smaller regardless
+of the number of blocks. As we scale the number of stacks up, I ended up with several 
+failures depending on the starting state (I consider it a failure once my search hits 5000
+iterations). This is because the number of neighbor states is much larger each iteration and my
+heuristic does not do much to account for a lot of empty stacks.
+
+I was able to solve 3 stacks and 12 blocks in a reasonable time for most starting states
+which is the largest I tested. The queue grew at mostly a linear rate when compared to the 
+number of iterations. 
+
+When it comes to finding optimal solution, my program sometimes found it but only on the 
+most simple starting states. My heuristic sometimes provided the same value for all 
+the neighbors which causes my program to take a non-optimal route.
+
+To improve my heuristic, I would need to find a way to make it a priority to place blocks 
+with a lower value on top of blocks of a higher value at all times.
+
+\end{document}

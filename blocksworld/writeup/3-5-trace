@@ -1,0 +1,51 @@
+
+Starting Search....
+ITR: 0 - QUEUE: 0 - F: 48
+ITR: 1 - QUEUE: 3 - F: 32
+ITR: 2 - QUEUE: 6 - F: 21
+ITR: 3 - QUEUE: 9 - F: 18
+ITR: 4 - QUEUE: 12 - F: 19
+ITR: 5 - QUEUE: 15 - F: 17
+ITR: 6 - QUEUE: 16 - F: 18
+ITR: 7 - QUEUE: 19 - F: 13
+ITR: 8 - QUEUE: 22 - F: 11
+ITR: 9 - QUEUE: 23 - F: 9
+START: 
+0 | A C D 
+1 | E 
+2 | B 
+
+0 | A C 
+1 | E 
+2 | B D 
+
+0 | A 
+1 | E C 
+2 | B D 
+
+0 | A 
+1 | E C D 
+2 | B 
+
+0 | A B 
+1 | E C D 
+2 | 
+
+0 | A B 
+1 | E C 
+2 | D 
+
+0 | A B C 
+1 | E 
+2 | D 
+
+0 | A B C D 
+1 | E 
+2 | 
+
+0 | A B C D E 
+1 | 
+2 | 
+
+Final number of iterations: 9
+Max. queue size: 23

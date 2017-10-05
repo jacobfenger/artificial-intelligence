@@ -1,0 +1,6 @@
+\contentsline {section}{\numberline {1}Running the Program}{1}
+\contentsline {section}{\numberline {2}Example Traces}{1}
+\contentsline {section}{\numberline {3}Heuristic Description}{3}
+\contentsline {subsection}{\numberline {3.1}Admissability}{3}
+\contentsline {section}{\numberline {4}Performance Metrics}{3}
+\contentsline {section}{\numberline {5}Results Discussion}{4}

@@ -125,26 +125,33 @@ void print_state(Node *state, int num_s, int num_b) {
     }
 }
 
-/* Computes the heuristic value.
- * This first approach just adds up the blocks that are out of place.
+/* Computes the heuristic value..
 */
 double compute_h(Node *cur_state, Node *goal_state, int num_s, int num_b) {
     double h = 0;
 
     for (int i = 0; i < num_s; i++) {
-        if (i == 0) {
-            for (int j = 0; j < cur_state->v[i].size(); j++) {
-                if (cur_state->v[i][j] != goal_state->v[i][j])
-                    h += 1;
-                else h -= 5;
+        for (int j = 0; j < cur_state->v[i].size(); j++) {
+
+            // If a block is in the wrong spot in the goal state
+            if (i == 0 && cur_state->v[i][j] != goal_state->v[i][j] ) {
+                h += (j+1)*5;
+            } 
+
+            // If blocks aren't even in the goal stack
+            if (i != 0) {
+                h += 3;
+
+                // If a block is above another block with a higher value
+                if (cur_state->v[i].size() >= j+2) {
+                    if (cur_state->v[i][j] < cur_state->v[i][j+1]) {
+                        h += (j+1)*3;
+                    }
+                }
             }
-        }
-        else {
-            h += cur_state->v[i].size();
         }
     }
 
-    if (cur_state->v[0].size() == 0) h -= 5;
 
     return h;
 }
@@ -200,7 +207,7 @@ vector <Node*> create_successors(Node *current_state, int num_s, int num_b) {
 
 // Perform the A* Search
 // Requires the start state, goal state, number of stacks, number of blocks, and the
-// runner struct that stores certain information.
+// runner struct that stores certain information.c
 Node * start_search(Node *start, Node *goal, int num_s, int num_b, struct runner &r) {
     cout << "\nStarting Search...." << endl;
 
@@ -220,6 +227,8 @@ Node * start_search(Node *start, Node *goal, int num_s, int num_b, struct runner
     while (!open.empty()) {
 
         r.iterations = itr;
+
+        if (itr >= 5000) return NULL;
 
         if (open.empty()) {
             cout << "No more states left. Ending search." << endl;
@@ -302,11 +311,10 @@ Node * start_search(Node *start, Node *goal, int num_s, int num_b, struct runner
 }
 
 // View the path taken from the start to final state
-void traceback(Node *state, int num_s, int num_b) {
+int traceback(Node *state, int num_s, int num_b) {
 
     vector <Node *> states;
     Node *temp = state;
-
 
     while (temp->parent != NULL) {
         states.push_back(temp);
@@ -316,8 +324,11 @@ void traceback(Node *state, int num_s, int num_b) {
     cout << "START: " << endl;
     for (int i = states.size() - 1; i >= 0; i--) {
         print_state(states[i], num_s, num_b);
+
         cout << endl;
     }
+
+    return states.size();
 }
 
 // Validation function for command line arguments 
@@ -335,6 +346,7 @@ bool validate_args(int argc, char **argv) {
 int main(int argc, char **argv) {
 
     srand(time(NULL)); // seed random
+    int pl = 0;
 
     if (!validate_args(argc, argv)) {
         cout << "Error in command line arguments.\n";
@@ -357,11 +369,13 @@ int main(int argc, char **argv) {
     Node *final_state = start_search(r.start, r.goal, r.stacks, r.blocks, r);
 
     // If a final state is found, perform a traceback to produce path
-    if(final_state != NULL) traceback(final_state, r.stacks, r.blocks);
+    if(final_state != NULL) pl = traceback(final_state, r.stacks, r.blocks);
     else cout << "SEARCH FAILED. NO GOAL STATE FOUND." << endl;
 
     cout << "Final number of iterations: " << r.iterations << endl;
-    cout << "Max. queue size: " << r.queue_size << endl;
+    cout << "Final path length: " << pl << endl;
+    if (final_state != NULL)
+        cout << "Max. queue size: " << r.queue_size << endl;
 
     return 0;
 }
