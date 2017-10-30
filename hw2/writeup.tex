@@ -1,0 +1,544 @@
+\documentclass[22pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amsthm,amssymb, graphicx, listings, multicol, varwidth}
+
+\begin{document}
+
+\title{CSCE 625 Programming Assignment \#1}
+\author{Jacob Fenger}
+\date{\today}
+\maketitle
+
+\section{Sammy's Sport Shop}
+\subsection*{a)}
+A propositional knowledge base is shown below:
+
+\begin{multicols}{2}
+\begin{enumerate}
+	\item $O1Y$
+	\item $O2W$
+	\item $O3Y$
+	\item $L1W$
+	\item $L2Y$
+	\item $L3B$
+	\item $O1Y \implies C1Y \lor C1B$ 
+	\item $O2W \implies C2W \lor C2B$
+	\item $O3Y \implies C3B \lor C3Y$
+	\item $C1W \implies \neg C2W \land \neg C3W$
+	\item $C1Y \implies \neg C2Y \land \neg C3Y$
+	\item $C1B \implies \neg C2B \land \neg C3B$
+	\item $C2W \implies \neg C1W \land \neg C3W$
+	\item $C2Y \implies \neg C1Y \land \neg C3Y$
+	\item $C2B \implies \neg C1B \land \neg C3B$
+	\item $C3W \implies \neg C1W \land \neg C2W$
+	\item $C3Y \implies \neg C1Y \land \neg C2Y$
+	\item $C3B \implies \neg C1B \land \neg C2B$
+	\item $L1Y \implies \neg C1Y$
+	\item $L1W \implies \neg C1W$
+	\item $L1B \implies \neg C1B$
+	\item $L2Y \implies \neg C2Y$
+	\item $L2W \implies \neg C2W$
+	\item $L2B \implies \neg C2B$
+	\item $L3Y \implies \neg C3Y$
+	\item $L3W \implies \neg C3W$
+	\item $L3B \implies \neg C3B$
+	\item $C1W \lor C1Y \lor C1B$
+	\item $C2W \lor C2Y \lor C2B$
+	\item $C3W \lor C3Y \lor C3B$
+\end{enumerate}
+\end{multicols}
+
+\subsection*{b)}
+The following are the steps following via Natural Deduction to prove that 
+box 2 must contain white balls ($C2W$).
+
+\begin{multicols}{2}
+\begin{enumerate}
+	\setcounter{enumi}{30}
+	\item $\neg C3B$ (M.P. on 27)
+	\item $C3B \lor C3Y$ (M.P. on 9)
+	\item $C3Y$ (Res. on 31 and 32)
+	\item $\neg C1Y \land \neg C2Y$ (M.P. on 17)
+	\item $C1Y \lor C1B$ (M.P. on 7)
+	\item $C2W \lor C2B$ (M.P. on 8)
+	\item $\neg C1Y$ (Conj. Elimination on 34)
+	\item $\neg C2Y$ (Conj. elimination on 34)
+	\item $C1B$ (Res. on 35 and 37)
+	\item $\neg C2B \land \neg C3B$ (M.P on 12)
+	\item $\neg C2B$ (And elimination on 40)
+	\item $\neg C3B$ (And elimination on 40)
+	\item $C2W$ (Res. on 36 and 41)
+\end{enumerate}
+\end{multicols}
+
+\subsection*{c)}
+First we must convert the propositional knowledge base to CNF:
+
+\begin{multicols}{2}
+\begin{enumerate}
+	\item $O1Y$
+	\item $O2W$
+	\item $O3Y$
+	\item $L1W$
+	\item $L2Y$
+	\item $L3B$
+	\item $\neg O1Y \lor C1Y \lor C1B$
+	\item $\neg O2W \lor C2W \lor C2B$
+	\item $\neg O3Y \lor C3B \lor C3Y$
+
+	\item
+	\begin{enumerate}
+		\item $\neg C1W \lor \neg C2W$
+		\item $\neg C1W \lor \neg C3W$
+	\end{enumerate}
+
+	\item
+	\begin{enumerate}
+		\item $\neg C1Y \lor \neg C2Y$
+		\item $\neg C1Y \lor \neg C3Y$
+	\end{enumerate}
+
+	\item
+	\begin{enumerate}
+
+		\item $\neg C1B \lor \neg C2B$
+		\item $\neg C1B \lor \neg C3B$
+	\end{enumerate}
+
+	\item
+	\begin{enumerate}
+		\item $\neg C2W \lor \neg C1W$
+		\item $\neg C2W \lor \neg C3W$
+	\end{enumerate}
+	
+	\item
+	\begin{enumerate}
+		\item $\neg C2Y \lor \neg C1Y$
+		\item $\neg C2Y \lor \neg C3Y$
+	\end{enumerate}
+
+	\item
+	\begin{enumerate}
+		\item $\neg C2B \lor \neg C1B$
+		\item $\neg C2B \lor \neg C3B$
+	\end{enumerate}
+
+	\item
+	\begin{enumerate}
+		\item $\neg C3W \lor \neg C1W$
+		\item $\neg C3W \lor \neg C2W$
+	\end{enumerate}
+
+	\item
+	\begin{enumerate}
+		\item $\neg C3Y \lor \neg C1Y$
+		\item $\neg C3Y \lor \neg C2Y$
+	\end{enumerate}
+
+	\item
+	\begin{enumerate}
+		\item $\neg C3B \lor \neg C1B$
+		\item $\neg C3B \lor \neg C2B$
+	\end{enumerate}
+
+	\item $\neg L1Y \lor \neg C1Y$
+	\item $\neg L1W \lor \neg C1W$
+	\item $\neg L1B \lor \neg C1B$
+	\item $\neg L2Y \lor \neg C2Y$
+	\item $\neg L2W \lor \neg C2W$
+	\item $\neg L2B \lor \neg C2B$
+	\item $\neg L3Y \lor \neg C3Y$
+	\item $\neg L3W \lor \neg C3W$
+	\item $\neg L3B \lor \neg C3B$
+\end{enumerate}
+\end{multicols}
+
+The following steps show the process of resolution refutation (Note: 
+Some of the useless steps when finding a solution were left out):
+
+\begin{multicols}{2}
+\begin{enumerate}
+	\setcounter{enumi}{27}
+	\item $\neg C2W$ (Assume negation of query)
+	\item $C1Y \lor C1B$ (Res. on 1 and 7)
+	\item $C2W \lor C2B$ (Res. on 2 and 8)
+	\item $C3B \lor C3Y$ (Res. on 3 and 9)
+	\item $\neg C3B$ (Res on 6 and 27)
+	\item $C3Y$ (Res. on 31 and 32)
+	\item $\neg C1Y$ (Res. on 11b and 33)
+	\item $C1B$ (Res. on 29 and 34)
+	\item $\neg C2B$ (Res on 12a and 35)
+	\item $C2W$ (Res. on 30 and 36)
+	\item $\square$ (End of proof since empty clause was found)
+\end{enumerate}
+\end{multicols}
+
+\newpage
+
+\section{4-Queens Problem}
+
+$Q_{i,j}$ represents a queen in row $i$ and column $j$. This notation will be 
+used heavily throughout this problem. \\
+
+The knowledge base in CNF is shown below :
+
+\begin{multicols}{4}
+\begin{enumerate}
+	% Every row has at least one queen
+	\item $Q_{1,1} \lor Q_{1,2} \lor Q_{1,3} \lor Q_{1,4}$
+	\item $Q_{2,1} \lor Q_{2,2} \lor Q_{2,3} \lor Q_{2,4}$
+	\item $Q_{3,1} \lor Q_{3,2} \lor Q_{3,3} \lor Q_{3,4}$
+	\item $Q_{4,1} \lor Q_{4,2} \lor Q_{4,3} \lor Q_{4,4}$
+
+	% Row 1 has at most 1 queen
+	\item $\neg Q_{1,1} \lor \neg Q_{1,2}$
+	\item $\neg Q_{1,1} \lor \neg Q_{1,3}$
+	\item $\neg Q_{1,1} \lor \neg Q_{1,4}$
+	\item $\neg Q_{1,2} \lor \neg Q_{1,3}$
+	\item $\neg Q_{1,2} \lor \neg Q_{1,4}$
+	\item $\neg Q_{1,3} \lor \neg Q_{1,4}$
+
+	% Row 2 has at most 1 queen 
+	\item $\neg Q_{2,1} \lor \neg Q_{2,2}$
+	\item $\neg Q_{2,1} \lor \neg Q_{2,3}$
+	\item $\neg Q_{2,1} \lor \neg Q_{2,4}$
+	\item $\neg Q_{2,2} \lor \neg Q_{2,3}$
+	\item $\neg Q_{2,2} \lor \neg Q_{2,4}$
+	\item $\neg Q_{2,3} \lor \neg Q_{2,4}$
+
+	% Row 3 has at most 1 queen
+	\item $\neg Q_{3,1} \lor \neg Q_{3,2}$
+	\item $\neg Q_{3,1} \lor \neg Q_{3,3}$
+	\item $\neg Q_{3,1} \lor \neg Q_{3,4}$
+	\item $\neg Q_{3,2} \lor \neg Q_{3,3}$
+	\item $\neg Q_{3,2} \lor \neg Q_{3,4}$
+	\item $\neg Q_{3,3} \lor \neg Q_{3,4}$
+
+	% Row 4 has at most 1 queen
+	\item $\neg Q_{4,1} \lor \neg Q_{4,2}$
+	\item $\neg Q_{4,1} \lor \neg Q_{4,3}$
+	\item $\neg Q_{4,1} \lor \neg Q_{4,4}$
+	\item $\neg Q_{4,2} \lor \neg Q_{4,3}$
+	\item $\neg Q_{4,2} \lor \neg Q_{4,4}$
+	\item $\neg Q_{4,3} \lor \neg Q_{4,4}$
+
+	% Column 1 has at most 1 queen
+	\item $\neg Q_{1,1} \lor \neg Q_{2,1}$
+	\item $\neg Q_{1,1} \lor \neg Q_{3,1}$
+	\item $\neg Q_{1,1} \lor \neg Q_{4,1}$
+	\item $\neg Q_{2,1} \lor \neg Q_{3,1}$
+	\item $\neg Q_{2,1} \lor \neg Q_{4,1}$
+	\item $\neg Q_{3,1} \lor \neg Q_{4,1}$
+
+	% Column 2 has at most 1 queen
+	\item $\neg Q_{1,2} \lor \neg Q_{2,2}$
+	\item $\neg Q_{1,2} \lor \neg Q_{3,2}$
+	\item $\neg Q_{1,2} \lor \neg Q_{4,2}$
+	\item $\neg Q_{2,2} \lor \neg Q_{3,2}$
+	\item $\neg Q_{2,2} \lor \neg Q_{4,2}$
+	\item $\neg Q_{3,2} \lor \neg Q_{4,2}$
+
+	% Column 3 has at most 1 queen
+	\item $\neg Q_{1,3} \lor \neg Q_{2,3}$
+	\item $\neg Q_{1,3} \lor \neg Q_{3,3}$
+	\item $\neg Q_{1,3} \lor \neg Q_{4,3}$
+	\item $\neg Q_{2,3} \lor \neg Q_{3,3}$
+	\item $\neg Q_{2,3} \lor \neg Q_{4,3}$
+	\item $\neg Q_{3,3} \lor \neg Q_{4,3}$
+
+	% Column 4 has at most 1 queen
+	\item $\neg Q_{1,4} \lor \neg Q_{2,4}$
+	\item $\neg Q_{1,4} \lor \neg Q_{3,4}$
+	\item $\neg Q_{1,4} \lor \neg Q_{4,4}$
+	\item $\neg Q_{2,4} \lor \neg Q_{3,4}$
+	\item $\neg Q_{2,4} \lor \neg Q_{4,4}$
+	\item $\neg Q_{3,4} \lor \neg Q_{4,4}$
+
+	% Diagonals for column 1
+	\item $\neg Q_{1,1} \lor \neg Q_{2,2}$
+	\item $\neg Q_{1,1} \lor \neg Q_{3,3}$
+	\item $\neg Q_{1,1} \lor \neg Q_{4,4}$
+	\item $\neg Q_{2,1} \lor \neg Q_{3,2}$
+	\item $\neg Q_{2,1} \lor \neg Q_{4,3}$
+	\item $\neg Q_{2,1} \lor \neg Q_{1,2}$
+	\item $\neg Q_{3,1} \lor \neg Q_{4,2}$
+	\item $\neg Q_{3,1} \lor \neg Q_{2,2}$
+	\item $\neg Q_{3,1} \lor \neg Q_{1,3}$
+	\item $\neg Q_{4,1} \lor \neg Q_{3,2}$
+	\item $\neg Q_{4,1} \lor \neg Q_{2,3}$
+	\item $\neg Q_{4,1} \lor \neg Q_{1,4}$
+
+	% Diagonals for column 2
+	\item $\neg Q_{1,2} \lor \neg Q_{2,3}$
+	\item $\neg Q_{1,2} \lor \neg Q_{3,4}$
+	\item $\neg Q_{2,2} \lor \neg Q_{1,3}$
+	\item $\neg Q_{2,2} \lor \neg Q_{3,3}$
+	\item $\neg Q_{2,2} \lor \neg Q_{4,4}$
+	\item $\neg Q_{3,2} \lor \neg Q_{4,3}$
+	\item $\neg Q_{3,2} \lor \neg Q_{2,3}$
+	\item $\neg Q_{3,2} \lor \neg Q_{1,4}$
+	\item $\neg Q_{4,2} \lor \neg Q_{3,3}$
+	\item $\neg Q_{4,2} \lor \neg Q_{2,4}$
+
+	% Diagonals for column 3
+	\item $\neg Q_{1,3} \lor \neg Q_{2,4}$
+	\item $\neg Q_{2,3} \lor \neg Q_{3,2}$
+	\item $\neg Q_{2,3} \lor \neg Q_{3,4}$
+	\item $\neg Q_{2,3} \lor \neg Q_{1,4}$
+	\item $\neg Q_{3,3} \lor \neg Q_{2,4}$
+	\item $\neg Q_{3,3} \lor \neg Q_{4,4}$
+	\item $\neg Q_{4,3} \lor \neg Q_{3,4}$
+
+\end{enumerate}
+\end{multicols}
+
+\subsection*{a)}
+The steps of using DPLL using no heuristics are shown below. Some 
+steps were combined together due to readability and conciseness.
+Final values are represented in the last row of the table.
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength\tabcolsep{3pt}
+\begin{tabular}{ |c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c| } 
+ \hline
+ $Q_{1,1}$ & $Q_{1,2}$ & $Q_{1,3}$ & $Q_{1,4}$ & $Q_{2,1}$ & $Q_{2,2}$ & $Q_{2,3}$ & $Q_{2,4}$ & $Q_{3,1}$ &
+  $Q_{3,2}$ & $Q_{3,3}$ & $Q_{3,4}$ & $Q_{4,1}$ & $Q_{4,2}$ & $Q_{4,3}$ & $Q_{4,4}$ & Comments\\ \hline
+
+ T & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & Doesn't satisfy all reqs \\ \hline
+ T & T & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & Violation on \#5 \\ \hline
+ T & F & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & No violation, reqs. not satisfied \\ \hline
+ T & F & T & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & Violation on \#6 \\ \hline
+ T & T & F & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & No violation, reqs. not satisfied \\ \hline
+ T & F & F & T & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & Violation on \#7 \\ \hline
+ T & F & F & F & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & No violation, reqs. not satisfied \\ \hline
+ T & F & F & F & T & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & Violation on \#29 \\ \hline
+ T & F & F & F & F & T & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & Violation on \#53 \\ \hline
+ T & F & F & F & F & F & T & ? & ? & ? & ? & ? & ? & ? & ? & ? & Continue \\ \hline
+ T & F & F & F & F & F & T & F & T & ? & ? & ? & ? & ? & ? & ? & Violation on \#30 \\ \hline
+ T & F & F & F & F & F & T & F & F & T & ? & ? & ? & ? & ? & ? & Violation on \#71 \\ \hline
+ T & F & F & F & F & F & T & F & F & F & T & ? & ? & ? & ? & ? & Violation on \#44 \\ \hline
+ T & F & F & F & F & F & T & F & F & F & F & T & ? & ? & ? & ? & Violation on \#77 \\ \hline
+ T & F & F & F & F & F & T & F & F & F & F & F & ? & ? & ? & ? & Violation on \#3 (Backtrack) \\ \hline
+ T & F & F & F & F & F & F & T & ? & ? & ? & ? & ? & ? & ? & ? & Continue \\ \hline
+ T & F & F & F & F & F & F & T & T & ? & ? & ? & ? & ? & ? & ? & Violation on \#30 \\ \hline
+ T & F & F & F & F & F & F & T & F & T & ? & ? & ? & ? & ? & ? & Continue \\ \hline
+ T & F & F & F & F & F & F & T & F & T & T & ? & ? & ? & ? & ? & Violation on \#20 \\ \hline
+ T & F & F & F & F & F & F & T & F & T & F & T & ? & ? & ? & ? & Violation on \#21 \\ \hline
+ T & F & F & F & F & F & F & T & F & T & F & F & T & ? & ? & ? & Violation on \#31 \\ \hline
+ T & F & F & F & F & F & F & T & F & T & F & F & F & T & ? & ? & Violation on \#40 \\ \hline
+ T & F & F & F & F & F & F & T & F & T & F & F & F & F & T & ? & Violation on \#70 \\ \hline
+ T & F & F & F & F & F & F & T & F & T & F & F & F & F & F & T & Violation on \#55 \\ \hline
+ T & F & F & F & F & F & F & T & F & T & F & F & F & F & F & F & Violation on \#4 (Backtrack) \\ \hline
+ T & F & F & F & F & F & F & T & F & F & T & ? & ? & ? & ? & ? & Violation on \#54 \\ \hline
+ T & F & F & F & F & F & F & T & F & F & F & T & ? & ? & ? & ? & Violation on \#50 \\ \hline
+ T & F & F & F & F & F & F & T & F & F & F & F & ? & ? & ? & ? & Violation on \#3 (Backtrack) \\ \hline
+ T & F & F & F & F & F & F & F & ? & ? & ? & ? & ? & ? & ? & ? & Violation on \#2 (Backtrack) \\ \hline
+ F & T & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & Continue \\ \hline
+ F & T & T & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & Violation on \#10 \\ \hline
+ F & T & F & T & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & Violation on \#9 \\ \hline
+ F & T & F & F & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & Continue \\ \hline
+ F & T & F & F & T & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & Violation on \#58 \\ \hline
+ F & T & F & F & F & T & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & Violation on \#35 \\ \hline
+ F & T & F & F & F & F & T & ? & ? & ? & ? & ? & ? & ? & ? & ? & Violation on \#65 \\ \hline
+ F & T & F & F & F & F & F & T & ? & ? & ? & ? & ? & ? & ? & ? & Continue \\ \hline
+ F & T & F & F & F & F & F & T & T & F & ? & ? & ? & ? & ? & ? & Continue \\ \hline
+ F & T & F & F & F & F & F & T & T & F & F & ? & ? & ? & ? & ? & Continue \\ \hline
+ F & T & F & F & F & F & F & T & T & F & F & F & ? & ? & ? & ? & Continue \\ \hline
+ F & T & F & F & F & F & F & T & T & F & F & F & T & ? & ? & ? & Violation on \#34 \\ \hline
+ F & T & F & F & F & F & F & T & T & F & F & F & F & T & ? & ? & Violation on \#59 \\ \hline
+ F & T & F & F & F & F & F & T & T & F & F & F & F & F & T & ? & Continue \\ \hline
+ F & T & F & F & F & F & F & T & T & F & F & F & F & F & T & F & Done. All clauses satisfied. \\ \hline
+ \end{tabular}
+ \end{table}
+
+
+ \newpage
+
+ \subsection*{b)}
+
+ The steps of DPLL using PureSymbol and UnitClause heuristics are shown below in the table:
+
+ \begin{table}[htbp]
+\centering
+\small
+\setlength\tabcolsep{3pt}
+\begin{tabular}{ |c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c| } 
+ \hline
+ $Q_{1,1}$ & $Q_{1,2}$ & $Q_{1,3}$ & $Q_{1,4}$ & $Q_{2,1}$ & $Q_{2,2}$ & $Q_{2,3}$ & $Q_{2,4}$ & $Q_{3,1}$ &
+  $Q_{3,2}$ & $Q_{3,3}$ & $Q_{3,4}$ & $Q_{4,1}$ & $Q_{4,2}$ & $Q_{4,3}$ & $Q_{4,4}$ & Comments\\ \hline
+
+ T & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & Doesn't satisfy all reqs (Continue) \\ \hline
+ T & F & F & F & F & F & ? & ? & F & ? & F & ? & F & ? & ? & F & U.C. on \#5, 6, 7, 29, 30, 31, 53, 54, 55 \\ \hline
+ T & F & F & F & F & F & T & ? & F & ? & F & ? & F & ? & ? & F & Continue \\ \hline
+ T & F & F & F & F & F & T & F & F & ? & F & ? & F & ? & ? & F & U.C. on \#16 \\ \hline
+ T & F & F & F & F & F & T & F & F & F & F & ? & F & ? & F & F & U.C. on \#45, 76 \\ \hline
+ T & F & F & F & F & F & T & F & F & F & F & F & F & ? & F & F & U.C. on \#77, violation on \#3 \\ \hline
+ T & F & F & F & F & F & F & T & F & ? & F & ? & F & ? & ? & F & Backtrack, Continue \\ \hline
+ T & F & F & F & F & F & F & T & F & ? & F & F & F & ? & ? & F & U.C. on \#50 \\ \hline
+ T & F & F & F & F & F & F & T & F & T & F & F & F & ? & ? & F & U.C. on \#3 \\ \hline
+ T & F & F & F & F & F & F & T & F & T & F & F & F & F & ? & F & U.C. on \#40 \\ \hline
+ T & F & F & F & F & F & F & T & F & T & F & F & F & F & F & F & U.C. on \#70, violation \#4 \\ \hline
+ T & F & F & F & F & F & F & F & F & ? & F & ? & F & ? & ? & F & Backtrack, Continue \\ \hline
+ T & F & F & F & F & F & F & F & F & ? & F & ? & F & ? & ? & F & Violation on \#2 (Backtrack) \\ \hline
+ F & T & F & F & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & ? & U.C. on \#8, 9 \\ \hline
+ F & T & F & F & F & F & F & ? & ? & F & ? & F & ? & F & ? & ? & U.C. on \#35, 36, 37, 58, 65, 66 \\ \hline
+ F & T & F & F & F & F & F & T & ? & F & ? & F & ? & F & ? & ? & U.C. on \#2 \\ \hline
+ F & T & F & F & F & F & F & T & ? & F & F & F & ? & F & ? & F & U.C. on \#50, 51 \\ \hline
+ F & T & F & F & F & F & F & T & T & F & F & F & ? & F & ? & F & U.C. on \#3 \\ \hline
+ F & T & F & F & F & F & F & T & T & F & F & F & F & F & ? & F & U.C. on \#34 \\ \hline
+ F & T & F & F & F & F & F & T & T & F & F & F & F & F & T & F & U.C. on \#4 \\ \hline
+ F & T & F & F & F & F & F & T & T & F & F & F & F & F & T & F & No violations! Search over! \\ \hline
+ \end{tabular}
+ \end{table}
+
+Final values are represented in the very last row of the table.
+
+\newpage
+
+\section{Tic-Tac-Toe}
+
+For the first set of rules, we have rules that state whenever X
+can win, we should make that move. This might be obvious, but 
+needs to be defined in the knowledge base.
+
+\begin{multicols}{2}
+\begin{enumerate}
+	\item $CanWinX_{11} \implies MoveX_{11}$
+	\item $CanWinX_{12} \implies MoveX_{12}$
+	\item $CanWinX_{13} \implies MoveX_{13}$
+	\item $CanWinX_{21} \implies MoveX_{21}$
+	\item $CanWinX_{22} \implies MoveX_{22}$
+	\item $CanWinX_{23} \implies MoveX_{23}$
+	\item $CanWinX_{31} \implies MoveX_{31}$
+	\item $CanWinX_{32} \implies MoveX_{32}$
+	\item $CanWinX_{33} \implies MoveX_{33}$
+\end{enumerate}
+\end{multicols}
+
+\noindent Next, we need to define when $CanWinX$ for all positions. This is true 
+when there are two positions with $X$ in them that can make a line (Vertically,
+horizontally, or diagonally). We do not care about the rest of the pieces on 
+the board since $X$ can win in the current turn.
+
+\begin{multicols}{2}
+\begin{enumerate}
+	\item $\{?_{11} \land X_{22} \land X_{33}\} \implies CanWinX_{11}$
+	\item $\{?_{11} \land X_{12} \land X_{13}\} \implies CanWinX_{11}$
+	\item $\{?_{11} \land X_{21} \land X_{31}\} \implies CanWinX_{11}$
+
+	\item $\{X_{11} \land ?_{12} \land X_{13}\} \implies CanWinX_{12}$
+	\item $\{?_{12} \land X_{22} \land X_{32}\} \implies CanWinX_{12}$
+
+	\item $\{X_{11} \land X_{12} \land ?_{13}\} \implies CanWinX_{13}$
+	\item $\{?_{13} \land X_{22} \land X_{31}\} \implies CanWinX_{13}$
+	\item $\{?_{13} \land X_{23} \land ?_{33}\} \implies CanWinX_{13}$
+
+	\item $\{X_{11} \land ?_{21} \land X_{31}\} \implies CanWinX_{21}$
+	\item $\{?_{21} \land X_{22} \land X_{23}\} \implies CanWinX_{21}$
+
+	\item $\{X_{11} \land ?_{22} \land X_{33}\} \implies CanWinX_{22}$
+	\item $\{X_{12} \land ?_{22} \land X_{32}\} \implies CanWinX_{22}$
+	\item $\{X_{13} \land ?_{22} \land X_{31}\} \implies CanWinX_{22}$
+	\item $\{X_{21} \land ?_{22} \land X_{23}\} \implies CanWinX_{22}$
+
+	\item $\{X_{21} \land X_{22} \land ?_{23}\} \implies CanWinX_{23}$
+	\item $\{X_{13} \land ?_{23} \land X_{33}\} \implies CanWinX_{23}$
+
+	\item $\{X_{11} \land X_{21} \land ?_{31}\} \implies CanWinX_{31}$
+	\item $\{X_{13} \land X_{22} \land ?_{31}\} \implies CanWinX_{31}$
+	\item $\{?_{31} \land X_{32} \land X_{33}\} \implies CanWinX_{31}$
+
+	\item $\{X_{31} \land ?_{32} \land X_{33}\} \implies CanWinX_{32}$
+	\item $\{X_{12} \land X_{22} \land ?_{32}\} \implies CanWinX_{32}$
+
+	\item $\{X_{11} \land X_{22} \land ?_{33}\} \implies CanWinX_{33}$
+	\item $\{X_{13} \land X_{23} \land ?_{33}\} \implies CanWinX_{33}$
+	\item $\{X_{31} \land X_{32} \land ?_{33}\} \implies CanWinX_{33}$
+\end{enumerate}
+\end{multicols}
+
+\noindent Now we must define all the possible moves that are necessary because 
+of a force move:
+
+\begin{multicols}{2}
+\begin{enumerate}
+	\item $ForcedMoveX_{11} \implies MoveX_{11}$
+	\item $ForcedMoveX_{12} \implies MoveX_{12}$
+	\item $ForcedMoveX_{13} \implies MoveX_{13}$
+	\item $ForcedMoveX_{21} \implies MoveX_{21}$
+	\item $ForcedMoveX_{22} \implies MoveX_{22}$
+	\item $ForcedMoveX_{23} \implies MoveX_{23}$
+	\item $ForcedMoveX_{31} \implies MoveX_{31}$
+	\item $ForcedMoveX_{32} \implies MoveX_{32}$
+	\item $ForcedMoveX_{33} \implies MoveX_{33}$
+\end{enumerate}
+\end{multicols}
+
+\noindent To help with readability, we define a rule for our knowledge base that is true
+when no possible moves for X will result in a win for X:
+
+$$\neg CanWinX_{11} \land CanWinX_{12} \land CanWinX_{13} \land CanWinX_{21} \land $$
+$$ CanWinX_{22} \land CanWinX_{23} \land CanWinX_{31} \land CanWinX_{32} \land CanWinX_{33} $$
+$$ \implies CannotWinX $$
+
+\noindent Using the above rule and the possible winning conditions for $O$ (The other player), we can 
+write rules for our knowledge base that state that if $O$ can win and $X$ cannot win in 
+the current move, we must make a forced move. This will lead to a priority of winning moves
+over forced move for $X$.
+
+\begin{enumerate}
+	\item $CanWinO_{11} \land CannotWinX \implies ForcedMoveX_{11}$
+	\item $CanWinO_{12} \land CannotWinX \implies ForcedMoveX_{12}$
+	\item $CanWinO_{13} \land CannotWinX \implies ForcedMoveX_{13}$
+	\item $CanWinO_{21} \land CannotWinX \implies ForcedMoveX_{21}$
+	\item $CanWinO_{22} \land CannotWinX \implies ForcedMoveX_{22}$
+	\item $CanWinO_{23} \land CannotWinX \implies ForcedMoveX_{23}$
+	\item $CanWinO_{31} \land CannotWinX \implies ForcedMoveX_{31}$
+	\item $CanWinO_{32} \land CannotWinX \implies ForcedMoveX_{32}$
+	\item $CanWinO_{33} \land CannotWinX \implies ForcedMoveX_{33}$
+\end{enumerate}
+
+\noindent We then must define winning conditions for $O$. This is exactly the same 
+as the set of winning conditions for $X$ defined above.
+
+\begin{multicols}{2}
+\begin{enumerate}
+	\item $\{?_{11} \land O_{22} \land O_{33}\} \implies CanWinO_{11}$
+	\item $\{?_{11} \land O_{12} \land O_{13}\} \implies CanWinO_{11}$
+	\item $\{?_{11} \land O_{21} \land O_{31}\} \implies CanWinO_{11}$
+
+	\item $\{O_{11} \land ?_{12} \land O_{13}\} \implies CanWinO_{12}$
+	\item $\{?_{12} \land O_{22} \land O_{32}\} \implies CanWinO_{12}$
+
+	\item $\{O_{11} \land O_{12} \land ?_{13}\} \implies CanWinO_{13}$
+	\item $\{?_{13} \land O_{22} \land O_{31}\} \implies CanWinO_{13}$
+	\item $\{?_{13} \land O_{23} \land ?_{33}\} \implies CanWinO_{13}$
+
+	\item $\{O_{11} \land ?_{21} \land O_{31}\} \implies CanWinO_{21}$
+	\item $\{?_{21} \land O_{22} \land O_{23}\} \implies CanWinO_{21}$
+
+	\item $\{O_{11} \land ?_{22} \land O_{33}\} \implies CanWinO_{22}$
+	\item $\{O_{12} \land ?_{22} \land O_{32}\} \implies CanWinO_{22}$
+	\item $\{O_{13} \land ?_{22} \land O_{31}\} \implies CanWinO_{22}$
+	\item $\{O_{21} \land ?_{22} \land O_{23}\} \implies CanWinO_{22}$
+
+	\item $\{O_{21} \land O_{22} \land ?_{23}\} \implies CanWinO_{23}$
+	\item $\{O_{13} \land ?_{23} \land O_{33}\} \implies CanWinO_{23}$
+
+	\item $\{O_{11} \land O_{21} \land ?_{31}\} \implies CanWinO_{31}$
+	\item $\{O_{13} \land O_{22} \land ?_{31}\} \implies CanWinO_{31}$
+	\item $\{?_{31} \land O_{32} \land O_{33}\} \implies CanWinO_{31}$
+
+	\item $\{O_{31} \land ?_{32} \land O_{33}\} \implies CanWinO_{32}$
+	\item $\{O_{12} \land O_{22} \land ?_{32}\} \implies CanWinO_{32}$
+
+	\item $\{O_{11} \land O_{22} \land ?_{33}\} \implies CanWinO_{33}$
+	\item $\{O_{13} \land O_{23} \land ?_{33}\} \implies CanWinO_{33}$
+	\item $\{O_{31} \land O_{32} \land ?_{33}\} \implies CanWinO_{33}$
+\end{enumerate}
+\end{multicols}
+
+\end{document}
