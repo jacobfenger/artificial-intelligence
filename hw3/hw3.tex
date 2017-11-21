@@ -1,0 +1,146 @@
+\documentclass[22pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amsthm,amssymb, graphicx, listings, multicol, varwidth}
+
+\begin{document}
+
+\title{CSCE 625 Homework \#2}
+\author{Jacob Fenger}
+\date{\today}
+\maketitle
+
+\section*{1)}
+
+\begin{itemize}
+	\item $ \forall x. tomato(x) \implies fruit(x) \lor vegetable(x) $
+	\item $ \exists x. mushroom(x) \land poisonous(x) $
+	\item $ \forall x. sides(x, 3) \land sumOfAngles(x, 180) \implies triangle(x) $
+	\item $ \forall x. plant(x) \land polinated(x) \implies produce(x, seeds) $
+	\item $ \forall x. movie(x) \land made(Stephen_{}King, x) \land \neg is(x, Cujo) 
+		\implies favorite(John, x) $
+	\item $ \forall x, y, z. game(z, football) \land greater(points(x), points(y)) \land
+		IsTeam(x) \land IsTeam(y) \implies winner(x) $ 
+	\item $ \forall x, g. FordExplorer(x) \land GasTank(g, x) \land leq(PercentFuelLeft(g), 0.1) 
+		\implies WarningLight(x) $
+	\item $ \exists x, y. computer(x) \land computer(y) \land bought(Al, x) \land 
+		bought(Bob, y) \implies SameManufacturer(x, y) $
+	\item $ \forall x. laptop(x) \land sold(Dell, x, 2012) \implies geq(MemoryInGigs(x), 4) $
+\end{itemize}
+
+\section*{2)}
+
+\begin{enumerate}
+	\item $ \forall x. P(x) \implies \big[\forall y. P(y) \implies P(f(x,y))\big] \land \big[ \neg \forall y. Q(x,y) \implies P(y) \big] $
+	\item $ \forall x. \neg P(x) \lor \big[\forall y. \neg P(y) \lor P(f(x,y)) \big] \land \big[ \neg \forall y. \neg Q(x,y) \lor P(y) \big]$ (Remove implications)
+	\item $ \forall x. \neg P(x) \lor \big[\forall y. \neg P(y) \lor P(f(x,y)) \big] \land \big[\exists y. Q(x,y) \land \neg P(y) \big] $ (Negate universal quantifier)
+	\item $ \forall x. \neg P(x) \lor \big[\forall y. \neg P(y) \lor P(f(x,y)) \big] \land \big[Q(x, f(x)) \land \neg P(f(x)) \big] $ (Skolemize y)
+	\item $ (\neg P(x) \lor (\neg P(y) \lor P(f(x,y)))) \land (\neg P(x) \lor (Q(x, (f(x)) \land \neg P(f(x))))) $ (Remove universal quantifier and distribute terms)
+	\item $ (\neg P(x) \lor (\neg P(y) \lor P(f(x,y)))) \land ((\neg P(x) \lor Q(x, (f(x)) \land (\neg P(x) \lor \neg P(f(x)))))) $ (Distribute the $\lor$ over the $\land$)
+\end{enumerate}
+
+\section*{3)}
+\subsection*{a)}
+
+\begin{enumerate}
+	\item $ pompeian(Marcus) $
+	\item $ \forall x. pompeian(x) \implies roman(x) $
+	\item $ ruler(Caesar) $
+	\item $ \forall x. roman(x) \implies (loyal(x, Caesar) \land \neg hate(x, Caesar))
+		\lor (\neg loyal(x, Caesar) \land hate(x, Caesar)) $
+	\item $ \forall x. \exists y. loyal(x, y)$
+	\item $ \forall x, y. person(x) \land AttemptAssassination(x, y) \land ruler(y)
+		\implies \neg loyal(x, y) $
+	\item $ AttemptAssassination(Marcus, Caesar) $
+	\item $ person(Marcus) $
+\end{enumerate}
+
+\subsection*{b)}
+
+\begin{enumerate}
+	\setcounter{enumi}{8}
+	\item $ Roman(Marcus) \quad \big[GMP | 1, 2, \theta={x/Marcus} \big] $
+	\item $ \neg loyal(Marcus, Caesar) \quad \big[GMP | 3, 6, 7, 8 \theta={x/Marcus, y/Caesar}\big] $
+	\item $ (loyal(Marcus, Caesar) \land \neg hate(Marcus, Caesar)) \lor 
+		(\neg loyal(marcus, Caesar) \land hate(marcus, Caesar)) $ \\ $ \big[GMP | 4, 8, \theta={x/Marcus}\big] $
+	\item
+	\begin{enumerate}
+		\item $ loyal(Marcus, Caesar) \lor (\neg loyal(Marcus, Caesar) \land hate(Marcus, Caesar)) \big[Distributive: 10\big] $
+		\item $ \neg hate(Marcus, Caesar) \lor (\neg loyal(Marcus, Caesar) \land hate(Marcus, Caesar)) \big[Distributive: 10\big] $
+	\end{enumerate}
+	\item We can distribute the $\lor$ further in both 11a and 11b and then split the clauses up to end with the following:
+	\begin{enumerate}
+		\item $ loyal(Marcus, Caesar) \lor \neg loyal(Marcus, Caesar) $
+		\item $ loyal(Marcus, Caesar) \lor hate(Marcus, Caesar) $
+		\item $ \neg hate(Marcus, Caesar) \lor \neg loyal(Marcus, Caesar) $
+		\item $ \neg hate(Marcus, Caesar) \lor hate(Marcus, Caesar) $
+	\end{enumerate}
+
+	\noindent For all of the clauses in 12 to be true, $hate(Marcus, Caesar)$ must be true since we know $\neg loyal(Marcus, Caesar)$ is true.
+
+	\item $hate(Marcus, Caesar) \quad$ [From the above reason.]  
+\end{enumerate}
+
+\section*{4)}
+\subsection*{a)}
+
+\begin{enumerate}
+	\item $ obs(1, Y) $
+	\item $ obs(2, W) $
+	\item $ obs(3, Y) $
+	\item $ lab(1, W) $
+	\item $ lab(2, Y) $
+	\item $ lab(3, B) $
+	\item $\forall x. lab(1, x) \implies \neg Cont(1, x) $
+	\item $\forall x. lab(2, x) \implies \neg Cont(2, x) $
+	\item $\forall x. lab(3, x) \implies \neg Cont(3, x) $
+	\item $\forall x. obs(1, x) \implies (cont(1, B) \lor cont(1, x))$
+	\item $\forall x. obs(2, x) \implies (cont(2, B) \lor cont(2, x))$
+	\item $\forall x. obs(3, x) \implies (cont(3, B) \lor cont(3, x))$
+	\item $\forall x. cont(x, Y) \lor cont(x, W) \lor cont(x, B)$
+	\item $\forall x. cont(1, x) \implies \neg cont(2, x) \land \neg cont(3, x) $
+	\item $\forall x. cont(2, x) \implies \neg cont(1, x) \land \neg cont(3, x) $
+	\item $\forall x. cont(3, x) \implies \neg cont(1, x) \land \neg cont(2, x) $
+\end{enumerate}
+
+\subsection*{b)}
+
+\begin{enumerate}
+\setcounter{enumi}{16}
+	\item $cont(2, B) \lor cont(2, W)$ [GMP | 2, 11, $\Theta = \{x/W\}$]
+	\item $\neg cont(3, B) $ [GMP | 6, 9, $\Theta=\{x/B\}$] 
+	\item $cont(3, B) \lor cont(3, Y) $ [GMP | 3, 12, $Theta=\{x/Y\}$] 
+	\item $cont(3, Y)$ [Res. on 18, 19]
+	\item 
+	\begin{enumerate}
+		\item $\neg cont(1, Y)$ [GMP | 16, 20, $\Theta=\{x/Y\}$]
+		\item $\neg cont(2, Y)$ [GMP | 16, 20, $\Theta=\{x/Y\}$] 
+	\end{enumerate}
+	\item $cont(1, B) \lor cont(1, Y)$ [GMP | 1, 10, $\Theta=\{x/Y\}$] 
+	\item $cont(1, B)$ [Res. on 21a, 22]
+	\item 
+	\begin{enumerate}
+		\item $\neg cont(2, B)$ [GMP | 14, 23, $\Theta=\{x/B\}$]
+		\item $\neg cont(3, B)$ [GMP | 14, 23, $\Theta=\{x/B\}$]
+	\end{enumerate}
+	\item $cont (2, W)$ (Res. on 17, 24a)
+\end{enumerate}
+
+\section*{5)}
+
+The following is an FOL knowledge base:
+
+\begin{enumerate}
+	\item $ \forall i, j. TowInARow(O, i) \land b(i, j) \implies CanWin(O, i, j) $
+	\item $ \forall i, j. TowInACol(O, j) \land b(i, j) \implies CanWin(O, i, j) $
+	\item $ \forall i, j. TowinADiag(O, i, j) \land b(i, j) \implies CanWin(O, i, j) $
+	\item $ \forall i, j. TwoInARow(X, i) \land b(i, j) \implies CanWin(X, i, j) $
+	\item $ \forall i, j. TowInACol(X, j) \land b(i, j) \implies CanWin(X, i, j) $
+	\item $ \forall i, j. TowInADiag(X, i, j) \land b(i, j) \implies CanWin(X, i, j) $
+	\item $ \forall i, j. CanWin(X, i, j) \implies Move(X, i, j) $
+	\item $ \forall i, j. \neg CanWin(X, i, j) \implies CannotWin(X, i, j) $
+	\item $ \forall i, j. CanWin(O, i, j) \land CannotWin(X, i, j) \implies ForcedMove(X, i, j) $
+	\item $ \forall i, j. ForcedMove(X, i, j) \implies Move(X, i, j) $
+\end{enumerate}
+
+\end{document}
